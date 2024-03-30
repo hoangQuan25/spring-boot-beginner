@@ -1,0 +1,42 @@
+1. first basic commands
+	CREATE USER 'username'@'localhost' IDENTIFIED BY 'password'; // create user
+	GRANT ALL PRIVILEGES ON * . * TO 'username'@'localhost'; // grant all privileges on all dbs and tables to user
+2. create db, table
+	CREATE DATABASE IF NOT EXISTS `db_name`; // note: use the `` not ''
+	CREATE TABLE `table_name` (
+		`id` INT NOT NULL AUTO_INCREMENT PRIMARY KEY, // id auto increments
+		`name` VARCHAR(45) DEFAULT NULL, // name max length 45, null by default
+		...
+	) AUTO_INCREMENT=1;
+	
+	DROP TABLE IF EXISTS `student`; // drop table
+
+3. delete a table
+	TRUNCATE table_name; // delete all rows and reset id to 1
+
+4. query (select):
+	SELECT column1, column2... FROM table_name;
+	SELECT * FROM table_name;
+	SELECT DISTINCT column1 FROM table_name; // return distinct values only
+	SELECT COUNT(DISTINCT) column1 FROM table_name; // count the number of distinct values
+	
+	// query with conditions
+	SELECT * FROM table_name WHERE conditions;
+	with conditions: 
+		=, >, <, >=, <=, <> (not equal)
+		eg: SELECT * FROM user WHERE age >= 60;
+
+		BETWEEN a AND b
+		eg: SELECT first_name, last_name FROM user WHERE age BETWEEN 20 AND 50;
+
+		LIKE "%abc%"   // contain 'abc'
+		eg: SELECT * FROM user WHERE city LIKE "sa%"
+
+		IN (value1, value2, ...)
+		eg: SELECT * FROM user WHERE city IN ('Berlin', 'San Francisco', 'Rome')
+
+	// not
+	SELECT * FROM table_name WHERE NOT conditions;
+	// combine
+	eg: SELECT * FROM user WHERE country = 'Germany' AND NOT city in ('Stuttgart', 'Hamburg', 'Munchen')
+

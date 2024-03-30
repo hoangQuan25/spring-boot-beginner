@@ -1,0 +1,31 @@
+Theory:
+- Entites: classes that are mapped to tables in db
+- DAOs classes: classes that contain interactions with db (CRUD), data access
+- Transaction: work that performs one or more db operations (CRUD) not queries
+
+@Entity: mark the start of a class that is mapped to a table in db
+@Table(name="table_name"): redefine name of that table
+
+fields:
+@Id: this field is primary key
+@GeneratedValue(strategy = GenerationType.IDENTITY): comes together with @Id, the primary key will auto-increment
+	(type IDENTITY)
+@Column(name="column_name"): redefine the name of column for that field in the table
+
+@Repository: mark a class that is implementing a DAO (containing db operations)
+@Transactional: mark a method that is performing transactions
+
+# objects and methods:
+	- entityManager: managing operations with db
+	// methods on entityManager:
+	void persist(t): save T t into db
+	T find(T.class, O primaryKey): find and return an object (a row in table) having that primary key
+	TypedQuery<T> query = entityManager.createQuery(String query, T.class): perform a query (not CRUD) on table of T
+	-> we can get the results: 
+		List<T> results = query.getResultList();
+	-> we can also set parameter for the native query in createQuery()
+		query.setParameter(String para_in_query, O parameter) // note: para_in_query must start with :
+	void merge(t): update the t (new row) into table after modified 
+	void remove(t): delete t from table
+	 
+

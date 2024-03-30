@@ -1,0 +1,19 @@
+@RestController: start of the controller handling HTTP req/res
+@Autowired: auto create instances of beans and wire it in using methods (= "new" keyword in Java)
+@Qualifier("className"): choose the specific class if multiple classes implement an interface
+@Getmapping("/route"): mark the method that handles get req on that route
+@Component: mark the bean class
+@Lazy: in Spring, instances of beans are auto created when the program starts. Putting @Lazy before each bean
+ (including the controller) won't make them being auto created, unless they are called
+
+@Scope("scope"): by default, each bean only creates one instance when being called (even multiple times during the 
+ program), we can change this. 
+	- by default: "singleton", only creates one instance
+	- "prototype": create one instance when the bean is called once
+ Prototype beans are lazy by default, so no need to add @Lazy to them.
+
+@PostConstruct: mark a method that will run right after the bean is created
+@PreDestroy: mark a method that will run right before the bean is destroyed
+@Bean: when we wanna import a class from outside, but dont have access to the src code, we wanna make them a bean
+without @Component anno. We will use a config class and create a method annotated with @Bean, which returns an 
+instance of the imported class.

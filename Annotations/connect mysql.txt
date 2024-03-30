@@ -1,0 +1,4 @@
+>connect via cmd: mysql -h localhost -u username -p
+
+>connect db: use database_name;
+>show tables: show tables;
