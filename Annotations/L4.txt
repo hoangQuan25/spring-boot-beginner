@@ -1,0 +1,28 @@
+1.  Typical:
+Database entity (table) -> DAO & DAO impl + Entity -> Service -> RestController -> UI
+
+- DAOImpl: @Repository
+- Service: @Service (@Transactional anno is put here)
+
+2 Using Spring Data JPA:
+We don't need DAO and its implementations any more, instead we use a repository implementing JpaRepository
+
+	@Repository
+	public class MyEntityRepository extends JpaRepository<MyEntity, T> (with T is the type of id, typical Integer)
+
+
+3 Using SDJ & Spring Data Rest:
+we even make it shorter, don't need any Service + RestController anymore. 
+DB -> JpaRepository + Entity -> UI
+Now if we want to access to the data (JSON) from the browser, we need to adhere to the url conventions:
+	GET/POST: /base_path/entities
+	PUT/DELETE: /base_path/entities/{id}
+	(remember to use the plural +s form of entity name)
+*note: many nouns in english have irregular plural form, so we can modify the /entities with the annotation:
+
+	@RepositoryRestResource(path = "new_name")
+and the url becomes:
+	/base_path/new_name
+
+We can manually modify the base path url in resouce file:
+	spring.data.rest.base-path=/base_path

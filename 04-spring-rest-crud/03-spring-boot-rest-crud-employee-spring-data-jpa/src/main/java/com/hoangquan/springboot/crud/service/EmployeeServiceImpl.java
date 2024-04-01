@@ -2,6 +2,7 @@ package com.hoangquan.springboot.crud.service;
 
 import com.hoangquan.springboot.crud.dao.EmployeeRepository;
 import com.hoangquan.springboot.crud.entity.Employee;
+import jakarta.transaction.Transactional;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
 
@@ -44,6 +45,7 @@ public class EmployeeServiceImpl implements EmployeeService {
     }
 
     @Override
+    @Transactional
     public Employee save(Employee employee) {
         return employeeRepository.save(employee);
     }
