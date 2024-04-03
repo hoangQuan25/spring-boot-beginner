@@ -16,37 +16,50 @@ public class EmployeeServiceImpl implements EmployeeService {
 
     @Autowired
     public EmployeeServiceImpl(EmployeeRepository theEmployeeRepository) {
-
         employeeRepository = theEmployeeRepository;
     }
 
+    @Override
+    public List<Employee> findAll() {
+        return employeeRepository.findAll();
+    }
 
     @Override
-    public Employee updateEmployee(int employeeId, Employee updatedEmployee) {
-        // Retrieve the employee by ID
-        Optional<Employee> optionalEmployee = employeeRepository.findById(employeeId);
-
-        // Check if the employee exists
-        if (optionalEmployee.isEmpty()) {
-            throw new RuntimeException("Employee not found with id: " + employeeId);
-        }
-
-        // Get the existing employee from Optional
-        Employee existingEmployee = optionalEmployee.get();
-
-        // Update the employee information
-        existingEmployee.setFirstName(updatedEmployee.getFirstName());
-        existingEmployee.setLastName(updatedEmployee.getLastName());
-        existingEmployee.setEmail(updatedEmployee.getEmail());
-        // You can update other fields as needed
-
-        // Save the updated employee
-        return employeeRepository.save(existingEmployee);
+    public Optional<Employee> findById(int id) {
+        return employeeRepository.findById(id);
     }
 
     @Override
     @Transactional
     public Employee save(Employee employee) {
         return employeeRepository.save(employee);
+    }
+
+    @Override
+    @Transactional
+    public Employee update(Employee employee, int id) {
+        Optional<Employee> optionalEmployee = employeeRepository.findById(id);
+
+        if (optionalEmployee.isPresent()) {
+            Employee updatedEmployee = optionalEmployee.get();
+            updatedEmployee.setFirstName(employee.getFirstName());
+            updatedEmployee.setLastName(employee.getLastName());
+            updatedEmployee.setEmail(employee.getEmail());
+
+            return employeeRepository.save(updatedEmployee);
+        }
+        return null;
+    }
+
+    @Override
+    @Transactional
+    public void deleteById(int id) {
+        employeeRepository.deleteById(id);
+    }
+
+    @Override
+    @Transactional
+    public void deleteAll() {
+        employeeRepository.deleteAll();
     }
 }
