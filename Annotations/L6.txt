@@ -1,0 +1,2 @@
+Model: container of application's data
+Controller -> (data) --> Model --> (data) -> View
