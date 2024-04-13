@@ -1,2 +1,51 @@
-Model: container of application's data
-Controller -> (data) --> Model --> (data) -> View
+Spring boot provides a way to render html/css pages from server sides. Such pages (templates) are put in /templates package.
+In the controller (or restcontroller) there are methods mapped to routes (urls) to handle http requests.
+
+* if we work with an entity (model), and we need to manage its attributes in browser side
+- put the entity in /model package
+- define mapping methods in controller
+- (optional) we can save data in application.properties file, and import them into use in controller using:
+	@Value("${variable_name}") // variable name and its values saved in application.properties
+	private T variable_name;   // often a List<String> is saved
+- mapped methods usually return a String, which is the file name of the html template it is mapped to
+	for example:
+
+	@GetMapping("/showForm")
+	public String showForm() {
+		// code
+		return "form";
+	}
+
+- each route (template/url) has its own Model (which handles data management). So if we wanna use those data imported beneath,
+we use this in mapped method:
+ 
+	@GetMapping("/showForm")
+	public String showForm(Model theModel) {
+		// inject data into model
+		theModel.addAttribute("variable_name", variable_name);
+		
+		return "form";
+	}
+
+- if the method uses attributes/data of the defined entity/model inside it, we need to inject it through @ModelAttribute
+	
+	@PostMapping("/processForm")
+	public String processForm(@ModelAttribute("entity") Entity theEntity) {
+		// codes to work with theEntity for example:
+		System.out.println(theEntity.toString());
+		
+		// return rendered html template
+		return "processForm";
+	}
+
+- in form.html, we basically use html tags/attributes with thymeleaf syntax (add th: before attributes)
+	if our entity has an attribute "name" then we might use it like:
+
+	<form th:action="@{/processForm}" th:object="entity" method="post">
+		<input type="text" th:field="*{name}" />
+
+
+
+
+
+	

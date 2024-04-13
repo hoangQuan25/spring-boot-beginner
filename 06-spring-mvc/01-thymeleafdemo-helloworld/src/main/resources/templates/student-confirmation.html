@@ -11,5 +11,10 @@
     The student is from: <span th:text="${student.country}" />
     <br>
     Favorite language: <span th:text="${student.fvLanguage}" />
+    <br>
+    Favorite operating system:
+    <ul>
+        <li th:each="tempSys : ${student.fvOS}" th:text="${tempSys}" />
+    </ul>
 </body>
 </html>
