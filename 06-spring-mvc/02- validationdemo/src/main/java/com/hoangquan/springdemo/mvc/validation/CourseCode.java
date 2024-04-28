@@ -14,7 +14,7 @@ import java.lang.annotation.Target;
 public @interface CourseCode {
     // this interface (validation) has two fields, value and error message
     // define default course code
-    public String value() default "CN";
+    public String prefix() default "CN";
     // define default error message
     public String message() default "must start with CN";
     // define default groups

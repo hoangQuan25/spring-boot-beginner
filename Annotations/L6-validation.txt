@@ -1,0 +1,108 @@
+We have 3 main ways of validation in Spring:
+1. Use available annotations:
+ In entity classes, we put validation annotations with their fields.
+	e.g:  @NotNull(message = "is required")
+              @Size(min=2, message = "more than 2 character")
+              private String lastName;
+ We have @NotNull, @Min, @Max, @Size...etc, with their messages logged when failure occurs.
+
+
+2. Use regexp
+ We use regexp in @Pattern anno, for example:
+	@Pattern(regexp = "^[a-zA-Z0-9]{5}$", message = "equal or less than 5 digits/chars")
+        private String postalCode;
+
+3. Custom validation
+ Imagine each field has a "type" of it, for example: a string has type of 'postal code' will have only 5 digits/chars,
+a string has type of 'product id' will start with 'PID'...
+ So, basically it's just like interfaces in java.
+
+ For each 'type' of fields like that, we can custom our validation, that means, custom our annotations.
+for example, we can make a @PostalCode or @ProductID anno.
+We need an @interface for our anno, and a ConstraintValidator class to define constraints and how to validate.
+
+This is the common way anno @interface: 
+
+	@Target({ElementType.FIELD, ElementType.METHOD, ElementType.PARAMETER})
+	@Retention(RetentionPolicy.RUNTIME)
+	@Constraint(validatedBy = CustomValidator.class)
+	public @interface CustomValidation {
+    		String message() default "must start with PID";
+    		Class<?>[] groups() default {};
+    		Class<? extends Payload>[] payload() default {};
+	}
+
+here, our annotation will be use with targets: fields, methods, parameters. It is used through runtime, and it use constraints
+defined in CustomValidator class.
+Inside the @interface, we can define our parameters for anno, always end in (). We can name them anything, for example for 
+the @ProductID: 
+
+	String prefix() default "PID";
+
+But the three params message, groups and payload must not be changed.
+
+
+CustomValidator class:
+
+	public class CustomValidator implements ConstraintValidator<CustomValidation, String> {
+
+    		@Override
+    		public void initialize(CustomValidation constraintAnnotation) {
+        		// Initialization, if needed
+    		}
+
+    		@Override
+    		public boolean isValid(String value, ConstraintValidatorContext context) {
+        		// Custom validation logic
+        		return value != null && !value.isEmpty();
+    		}
+	}
+
+The class implements a validator interface, which has 2 methods: initialize and isValid. The initialize() method is used
+when we have parameters in our annotation that need to be check when validating. For example, the 'product id' starts 
+with 'PID', so we need to have an id with prefix 'PID'.
+	
+	private String prefix;
+	
+	@Override
+	public void initialize(ProductID theProductID ) {
+		prefix = theProductID.prefix();
+	}
+
+	@Override
+    	public boolean isValid(String theProductID, ConstraintValidatorContext theConstraintValidatorContext) {
+        	return theProductID != null && theCode.startsWith(prefix); 
+    	}
+
+
+So, our product id annotation will have a default prefix 'PID' and default message 'must start with PID'
+We can use it in our entity:
+	
+	@ProductID
+	private String id;
+
+But, we can still custom our params afterwards:
+	
+	@ProductID(prefix = "P", message = "must start with P")
+	private String id;
+		
+
+==> Finally, we must add the validation process into the method handling the post request in controller:
+For example, we have a /processForm route for posting data from a form, and we have its mapping:
+
+	@PostMapping("/processForm")
+    	public String processForm(
+            @Valid @ModelAttribute("product") Product theProduct,
+            BindingResult theBindingResult
+    	) {
+        	if (theBindingResult.hasErrors()) return "addproduct-form"; // if error, turn back to the form
+        	else return "product-list"; // no error, proceed to list view
+    	}
+
+In this method, we are validating the data from model, a 'product' object, and we must add @Valid annotation to it.
+And the BindingResult class is for capturing the result of the validation process, then we can check if any error occurs.
+
+
+
+
+

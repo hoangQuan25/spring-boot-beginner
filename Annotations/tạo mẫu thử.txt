@@ -1,0 +1,32 @@
+I. mãu thử gd: 2 thứ cần quan tâm: nội dung và kết xuất nội dung
+
+1. nội dung
+a. nd 1 chiều: thông tin mà ng dùng ko tương tác đc, chỉ trả về cho ng dùng (vd văn bản, ký pháp toán học, ảnh, media...)
+	--> tạo 1 tài lieuj: application style guide: miêu tả app có nhuwngx nội dung gì, mỗi nội dung đó đc kết xuất dưới dạng
+gì, màu chữ gì...
+
+b. nd tương tác: nd 2 chiều
+c. phần tử giao diện: 
+
+2. kết xuất nd:
+a. bố cục: chọn khung mh theo tỷ lệ thích hợp (tràn màn hình -> phóng ra đầy kth màn hình, 
+b. dạng hiển thị thông tin: text size...
+c. cách diễn đạt: 
+d. màu sắc
+
+
+II. mẫu thử tt: 2 khía cạnh: điều hướng (navigation) và hỗ trợ tương tác (interraction support)
+
+
+I. điều hướng
+1. luông duyệt tin: 
+
+a. trên màn hình
+mắt: ziczac trên xuống, tay: thẳng đứng tren xuống -> phải tuân thủ nguyên tắc này
+-> hỗ trợ duyệt tin: gióng thẳng hàng, nhóm các phần tử giao diện, sử dụng khung viền
+tập trung nhấn mạnh: nd chính, nd thứ cấp
+dùng phím tab  để dịch chuyenr theo thứ tuwj logic các thông tin hiện tại (quan trọng)
+
+b. qua các màn hình
+luông nhiệm vụ: trình tự tương tác ng dùng cần thực hiện để hoàn tahnhf 1 nhiệm vụ
+user flow: lộ trình của 1 cá nhân cụ thể qua giao diện hiện có (nhiều luồng khác nhau qua mục tiêu khác nhau)

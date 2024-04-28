@@ -1,0 +1,41 @@
+<!DOCTYPE html>
+<html lang="en" xmlns:th="http://www.thymeleaf.org" xmlns:sec="http://www.thymeleaf.org/extras/spring-security">
+<head>
+    <meta charset="UTF-8">
+    <title>Hoang Quan Kabushiki kaisha homepage</title>
+</head>
+<body>
+    <h2>HoangQuan co.ltd Home Page</h2>
+    <hr>
+    <p>
+        Welcome to HoangQuan co.ltd home page!
+    </p>
+
+    <!-- display username and role -->
+    <hr>
+
+    <p>
+        User: <span sec:authentication="principal.username"></span>
+        <br>
+        Role (s): <span sec:authentication="principal.authorities"></span>
+    </p>
+
+    <!-- add links to point to /leaders and /systems, for other roles -->
+    <div sec:authorize="hasRole('MANAGER')">
+        <p>
+            <a th:href="@{/leaders}">Leadership meeting</a>
+        </p>
+    </div>
+
+    <div sec:authorize="hasRole('ADMIN')">
+        <p>
+            <a th:href="@{/admins}">Admin meeting</a>
+        </p>
+    </div>
+    <hr>
+
+    <form action="#" th:action="@{/logout}" method="post">
+        <input type="submit" value="Logout" />
+    </form>
+</body>
+</html>
